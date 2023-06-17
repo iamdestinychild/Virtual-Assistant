@@ -2,7 +2,7 @@ import openai
 from dotenv import dotenv_values
 
 
-openai.api_key = ""
+openai.api_key = dotenv_values(".env")["API_KEY"]
 
 msg_logs = []
 
