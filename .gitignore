@@ -2,3 +2,5 @@
 env
 ai.py
 __pycache__
+dist
+build
