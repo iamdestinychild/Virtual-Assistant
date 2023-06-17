@@ -20,7 +20,7 @@ def bot(msg):
                     messages=msg_logs
                 )
 
-                result = response["choices"][0]["message"]["content"].strip("\n").strip()
+                result = response["choices"][0]["message"]["content"].strip("\n")
                 # .strip("\n").strip()
 
             except Exception:
