@@ -12,10 +12,31 @@ def clear_bin():
     num_items = len(items_list)
 
 
+    message = ''
+
     if num_items == 0:
-        return print('bin is already empty')
+        message = "Bin Is Already Empty"
+        return message
     elif num_items >= 1:
         winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
-        return print('Success')
+        message = "Clear Recircle Bin Succesful"
+        return message
     else:
-        return("error occured")
+        message = "Error Occured"
+        return message
+
+
+def bin_count():
+    recycle_bin = winshell.recycle_bin()
+    item_count = 0
+
+    for item in recycle_bin:
+        item_count += 1
+
+    return item_count
+
+    item_count = count_items_in_recycle_bin()
+    return item_count
+
+
+

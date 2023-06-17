@@ -2,7 +2,7 @@ import openai
 from dotenv import dotenv_values
 
 
-openai.api_key = dotenv_values(".env")["API_KEY"]
+openai.api_key = "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"
 
 msg_logs = []
 
@@ -20,7 +20,7 @@ def bot(msg):
                     messages=msg_logs
                 )
 
-                result = response["choices"][0]["message"]["content"].strip("\n").strip()
+                result = response["choices"][0]["message"]["content"].strip("\n")
                 # .strip("\n").strip()
 
             except Exception:

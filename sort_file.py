@@ -1,41 +1,29 @@
 import os
 import shutil
 
-download_folder = os.path.expanduser('~/Desktop')
-photo_folder = os.path.expanduser('~/Pictures/pythonVA-images')
-video_folder = os.path.expanduser('~/Videos/pythonVA-videos')
+def sort_files(folder):
+    file_types = {
+        'Images': ['.jpg', '.jpeg', '.png', '.gif'],
+        'Videos': ['.mp4', '.mov', '.avi', '.mkv'],
+        'Documents': ['.pdf', '.doc', '.docx', '.txt'],
+        'Others': ['.tar', '.exe', '.zip'],
+    }
 
-def sort_images(dir):
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        if os.path.isfile(file_path):
+            file_extension = os.path.splitext(filename)[1].lower()
 
-    if not os.path.exists(photo_folder):
-        os.makedirs(photo_folder)
-
-    if dir == "desktop":
-        from_dir = os.path.expanduser('~/Desktop')
-
-    if dir == "download":
-        from_dir = os.path.expanduser('~/Downloads')
-
-    files = os.listdir(from_dir)
-    image_files = [f for f in files if f.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
-
-    for f in image_files:
-        shutil.move(os.path.join(from_dir, f), os.path.join(photo_folder, f))
-
-def sort_videos(dir):
-
-    if not os.path.exists(video_folder):
-        os.makedirs(video_folder)
-    
-    if dir == "1":
-        from_dir = os.path.expanduser('~/Desktop')
-
-    if dir == "2":
-        from_dir = os.path.expanduser('~/Downloads')
-
-    files = os.listdir(from_dir)
-    image_files = [f for f in files if f.endswith(('.mp4', '.mov', '.mkv', '.gif'))]
-
-    for f in image_files:
-        shutil.move(os.path.join(from_dir, f), os.path.join(video_folder, f))
-
+            if file_extension:
+                for category, extensions in file_types.items():
+                    if file_extension in extensions:
+                        destination_dir = os.path.join(folder, category)
+                        if not os.path.exists(destination_dir):
+                            os.makedirs(destination_dir)
+                        shutil.move(file_path, destination_dir)
+                        break
+            else:
+                destination_dir = os.path.join(folder, 'Folders')
+                if not os.path.exists(destination_dir):
+                    os.makedirs(destination_dir)
+                shutil.move(file_path, destination_dir)
