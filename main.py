@@ -21,7 +21,7 @@ app.grid_columnconfigure((0, 1), weight=1)
 app.grid_rowconfigure(0, weight=1)
 app.resizable(False, False)
 
-appLabel = customtkinter.CTkLabel(app, font=("Arial", 16, 'bold'), text='Welcome To Virtual Assistant 2.0')
+appLabel = customtkinter.CTkLabel(app, font=("Arial", 16, 'bold'), text='Welcome To Virtual Assistant 1.5')
 appLabel.grid(row=0, column=0, pady=5, sticky="ns")
 
 
@@ -64,13 +64,12 @@ def networkDialog_task():
     hosts = ["google.com","twitter.com", "youtube.com"]
 
     def pingTest():
-
         
-        if(optionmenu.get() == ''):
+        if(ping_entry.get() == ''):
             msg_label.configure(text='Kindely Choose A Host', text_color='red')
             return
         else:
-            host_name = optionmenu.get()
+            host_name = ping_entry.get()
         latency = cn.ping_test(host_name)
         if latency != -1:
             msg = f"{host_name} is reachable with a latency of {latency} ms."
@@ -94,9 +93,8 @@ def networkDialog_task():
     ping_test = customtkinter.CTkButton(ping_test_frame, text="Ping Test", command=pingTest)
     ping_test.pack(padx=1, side=customtkinter.LEFT)
 
-    optionmenu_var = customtkinter.StringVar(value="")
-    optionmenu = customtkinter.CTkOptionMenu(ping_test_frame,values=hosts,variable=optionmenu_var)
-    optionmenu.pack(padx=1)
+    ping_entry = customtkinter.CTkEntry(ping_test_frame, font=("Arial", 14), placeholder_text="eg google.com")
+    ping_entry.pack(padx=5, side=customtkinter.LEFT)
 
 def sortFiles_task():
     dialog = customtkinter.CTkToplevel(app)
