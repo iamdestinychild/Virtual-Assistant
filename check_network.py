@@ -15,13 +15,22 @@ def get_local_ip():
         s.close()
     return ip_address
 
+
 def ping_test(host):
     try:
-        latency = ping3.ping(host)
+        # Check if the host is reachable by attempting to resolve its IP address
+        ip_address = socket.gethostbyname(host)
+        if ip_address == '127.0.0.1':
+            # The host is the loopback address, indicating the local machine
+            return 0
+
+        # Ping the host
+        latency = ping3.ping(ip_address)
         if latency is not None:
             return latency
         else:
             return -1
-    except ping3.errors.PingError:
+    except (ping3.errors.PingError, socket.gaierror):
         return -1
+
     
