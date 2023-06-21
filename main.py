@@ -1,4 +1,5 @@
 import os
+import asyncio
 import customtkinter
 from customtkinter import filedialog
 import tkinter as tk
@@ -20,7 +21,7 @@ app.grid_columnconfigure((0, 1), weight=1)
 app.grid_rowconfigure(0, weight=1)
 app.resizable(False, False)
 
-appLabel = customtkinter.CTkLabel(app, font=("Arial", 16, 'bold'), text='Virtual Assistant')
+appLabel = customtkinter.CTkLabel(app, font=("Arial", 16, 'bold'), text='Welcome To Virtual Assistant 2.0')
 appLabel.grid(row=0, column=0, pady=5, sticky="ns")
 
 
@@ -44,10 +45,10 @@ def networkDialog_task():
 
 
     label = customtkinter.CTkLabel(dialog, font=("Arial", 16, 'bold'), text='Which Task Are Your Performing?')
-    label.pack(pady=20)
+    label.pack(pady=10)
     
     msg_frame = customtkinter.CTkFrame(dialog, fg_color='transparent')
-    msg_frame.pack(pady=15)
+    msg_frame.pack(pady=5)
 
     msg = ''
     
@@ -60,34 +61,42 @@ def networkDialog_task():
         msg = f'Your IP is: {cn.get_local_ip()}'
         msg_label.configure(text=msg, text_color='green')
 
+    hosts = ["google.com","twitter.com", "youtube.com"]
+
     def pingTest():
 
-        msg_label.configure(text='Ping Testing Google.com', text_color='green')
-
-        hosts = {
-        "Google": "google.com",
-        }
-
-        for name, host in hosts.items():
-            latency = cn.ping_test(host)
-            if latency != -1:
-                msg = f"{name}.com is reachable with a latency of {latency} ms."
-                msg_label.configure(text=msg, text_color='green')
-                
-            else:
-                msg = f"{name} is unreachable."
-                msg_label.configure(text=msg, text_color='red')
+        
+        if(optionmenu.get() == ''):
+            msg_label.configure(text='Kindely Choose A Host', text_color='red')
+            return
+        else:
+            host_name = optionmenu.get()
+        latency = cn.ping_test(host_name)
+        if latency != -1:
+            msg = f"{host_name} is reachable with a latency of {latency} ms."
+            msg_label.configure(text=msg, text_color='green')    
+        else:
+            msg = f"ping failed {host_name} is unreachable."
+            msg_label.configure(text=msg, text_color='red')
 
 
 
 
-    network_button_frame = customtkinter.CTkFrame(dialog, fg_color='transparent')
-    network_button_frame.pack()
+    network_button_frame = customtkinter.CTkFrame(dialog, fg_color='transparent', height=100)
+    network_button_frame.pack(pady=5)
 
-    ipTest = customtkinter.CTkButton(network_button_frame, text="Check Ip", command=getIp)
+    ipTest = customtkinter.CTkButton(network_button_frame, text="Check System Ip", command=getIp)
     ipTest.pack(padx=10, side=customtkinter.LEFT)
-    ping_test = customtkinter.CTkButton(network_button_frame, text="Ping Test", command=pingTest)
-    ping_test.pack(padx=10, side=customtkinter.LEFT)
+
+    ping_test_frame = customtkinter.CTkFrame(network_button_frame)
+    ping_test_frame.pack(padx=10)
+
+    ping_test = customtkinter.CTkButton(ping_test_frame, text="Ping Test", command=pingTest)
+    ping_test.pack(padx=1, side=customtkinter.LEFT)
+
+    optionmenu_var = customtkinter.StringVar(value="")
+    optionmenu = customtkinter.CTkOptionMenu(ping_test_frame,values=hosts,variable=optionmenu_var)
+    optionmenu.pack(padx=1)
 
 def sortFiles_task():
     dialog = customtkinter.CTkToplevel(app)
@@ -146,9 +155,9 @@ def sortFiles_task():
             sort_msg.configure(text=msg, text_color='red')
             return
         
-        sf.sort_files(folder_path)
-        msg = "Files sorted successfully."
-        sort_msg.configure(text=msg, text_color='green')
+        
+        msg = sf.sort_files(folder_path)
+        sort_msg.configure(text=msg, text_color='white')
 
     sort_button_frame = customtkinter.CTkFrame(dialog, fg_color='transparent')
     sort_button_frame.pack(pady=5)
@@ -250,7 +259,7 @@ def find_task():
 
 
     # path_var = customtkinter.StringVar()
-    path_entry = customtkinter.CTkEntry(file_window_frame, font=("Arial", 14), width=350, height=35, placeholder_text="Folder Path")
+    path_entry = customtkinter.CTkEntry(file_window_frame, font=("Arial", 14), width=350, height=35, placeholder_text="default path: C// Or Choose Path")
     path_entry.pack(padx=5, side=customtkinter.LEFT)
 
     file_window_btn = customtkinter.CTkButton(file_window_frame, width=270, height=35, text="Choose Folder", command=choose_folder)
@@ -261,16 +270,21 @@ def find_task():
     file_entry = customtkinter.CTkEntry(dialog, font=("Arial", 14), width=450, height=35, placeholder_text="File/Folder Name")
     file_entry.pack(pady=5)
 
-
-    def search():
+    async def search():
         msg_label.configure(text='Searching...', text_color='white')
         target_name = file_entry.get()
-        file_path =path_entry.get()
-        found_items = srch.find_files_and_folders(file_path, target_name)
+        if(path_entry.get() == ''):
+            file_path ='C://'
+        else:
+            file_path = path_entry.get()
+        found_items = await srch.find_files_and_folders(file_path, target_name)
         for item in found_items:
             paths_found = customtkinter.CTkButton(search_box,  font=("Arial", 16), command = lambda path=item: open_path(path), fg_color='#4b5563', anchor="w", width=780, height=50, text=item)
             paths_found.pack(pady=5, padx=10)
         msg_label.configure(text='Search Complete', text_color='green')
+
+    def async_search():
+        asyncio.run(search())
 
     def open_path(path):
         srch.open_directory(path)
@@ -278,7 +292,7 @@ def find_task():
             
             
 
-    search_button = customtkinter.CTkButton(dialog, font=("Arial", 15), width=300, height=45, text='Search', command=search)
+    search_button = customtkinter.CTkButton(dialog, font=("Arial", 15), width=300, height=45, text='Search', command=async_search)
     search_button.pack(pady=5)
 
     msg_frame = customtkinter.CTkFrame(dialog, fg_color='transparent')
