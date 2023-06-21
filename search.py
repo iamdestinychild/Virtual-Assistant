@@ -1,9 +1,10 @@
 import os
-import concurrent.futures
 import platform
 import subprocess
+import concurrent
+import asyncio
 
-def find_files_and_folders(directory, name):
+async def find_files_and_folders(directory, name):
     found_items = []
     with concurrent.futures.ThreadPoolExecutor() as executor:
         for root, dirs, files in os.walk(directory):
