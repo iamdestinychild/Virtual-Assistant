@@ -3,8 +3,8 @@
 
 #define MyAppName "Python-VA"
 #define MyAppVersion "1.5"
-#define MyAppPublisher "7milkyways"
-#define MyAppURL "https://www.7milkyways.com/"
+#define MyAppPublisher "Edo State University"
+#define MyAppURL "https://www.edouniversity.edu.ng/"
 #define MyAppExeName "Python-VA.exe"
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".myp"
@@ -13,7 +13,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{68BA6732-AC4C-4A96-BBCC-24D5A74841CE}
+AppId={{D5DDFD3F-A5FB-4872-B5F5-52C9527D1D0E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}

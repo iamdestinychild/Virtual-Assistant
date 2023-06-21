@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['setup.py'],
+    ['main.py'],
     pathex=[],
     binaries=[],
     datas=[('C:\\Users\\DESTINY\\Documents\\MyProjects\\Python-Projects\\Virtual-Assistant\\env\\Lib\\site-packages/customtkinter', 'customtkinter/')],
