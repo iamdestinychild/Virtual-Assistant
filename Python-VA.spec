@@ -8,7 +8,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\DESTINY\\Documents\\MyProjects\\Python-Projects\\Virtual-Assistant\\env\\Lib\\site-packages/customtkinter', 'customtkinter/')],
+    datas=[('C:\\Users\\DESTINY\\Documents\\MyProjects\\Python-Projects\\Virtual-Assistant\\env\\Lib\\site-packages/customtkinter', 'customtkinter')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

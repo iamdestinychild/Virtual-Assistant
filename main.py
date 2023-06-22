@@ -21,7 +21,7 @@ app.grid_columnconfigure((0, 1), weight=1)
 app.grid_rowconfigure(0, weight=1)
 app.resizable(False, False)
 
-appLabel = customtkinter.CTkLabel(app, font=("Arial", 16, 'bold'), text='Welcome To Virtual Assistant 1.5')
+appLabel = customtkinter.CTkLabel(app, font=("Arial", 16, 'bold'), text='Welcome To Virtual Assistant 1.0')
 appLabel.grid(row=0, column=0, pady=5, sticky="ns")
 
 
